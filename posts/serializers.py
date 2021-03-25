@@ -15,10 +15,10 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     # В ответе на запрос поле author будет выведено на основе своей __str__.
     author = serializers.StringRelatedField()
-    # В ответе на запрос поле post будет выведено как Key.
-    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         fields = ('id', 'author', 'post', 'text', 'created')
         model = Comment
-        read_only_fields = ('author',)
+        # Если ставим read_only_fields, то не ожидаем их ввода в запросе,
+        # а сами заполняем их значения у обязательных полей.
+        read_only_fields = ('author', 'post')

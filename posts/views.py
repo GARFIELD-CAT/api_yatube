@@ -34,7 +34,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     # При создании комментария поле author будет взято из request.user.
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        post_id = self.kwargs.get('post_id')  # Получаем id поста.
+        post = Post.objects.get(id=post_id)  # Делаем запрос к базе.
+        serializer.save(author=self.request.user, post=post)
 
     # Queryset будет собран из комментариев одного поста.
     def get_queryset(self):
